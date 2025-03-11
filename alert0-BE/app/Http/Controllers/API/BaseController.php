@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use Illuminate\Http\Reguest;
+use Illuminate\Http\Request;
 Use App\Http\Controllers\Controller as Controller;
 
 class BaseController extends Controller
