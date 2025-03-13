@@ -19,6 +19,8 @@ class RegisterController extends BaseController
 
     public function Register(Request $request)
     {
+
+
         $validator = Validator::make($request->all(),[
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
@@ -28,7 +30,8 @@ class RegisterController extends BaseController
             'gender' => 'required',
             'role' => 'required',
             'status' => 'required',
-            'phone' => 'required|min:11|max:11'
+            'phone' => 'required',
+
         ]);
 
         if($validator->fails()){

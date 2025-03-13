@@ -26,6 +26,7 @@ class User extends Authenticatable
         'role',
         'status',
         'phone',
+        'profile_picture',
     ];
 
     /**
@@ -37,6 +38,15 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+
+    protected function profilePictureUrl(): Attribute
+    {
+        return Attribute::get(fn () => $this->profile_picture
+            ? asset('storage/' . $this->profile_picture)
+            : asset('default-avatar.png'));
+    }
+
 
     /**
      * Get the attributes that should be cast.
