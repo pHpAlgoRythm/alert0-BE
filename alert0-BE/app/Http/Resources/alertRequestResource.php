@@ -22,6 +22,9 @@ class alertRequestResource extends JsonResource
         'request_date'   => $this->request_date,
         'longitude'      => $this->longitude,
         'latitude'       => $this->latitude,
+        'request_photo'  => $this->request_photo
+                ? asset('storage/' . $this->request_photo)
+                : null,
         'created_at'     => $this->created_at,
       ];
     }

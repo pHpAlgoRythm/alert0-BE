@@ -17,6 +17,6 @@ class AlertRequest  extends Model
      */
 
      protected $fillable = [
-        'user_id', 'request_type', 'request_status', 'request_date', 'longitude', 'latitude'
+        'user_id', 'request_type', 'request_status', 'request_date', 'longitude', 'latitude', 'request_photo'
         ];
 }

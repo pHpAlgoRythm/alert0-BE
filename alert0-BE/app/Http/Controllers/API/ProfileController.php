@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\support\Facades\Auth;
 use Validator;
 use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\API\BaseController;
 
-class ProfileController extends Controller
+class ProfileController extends BaseController
 {
     public function updateProfilePicture(Request $request)
     {

@@ -8,6 +8,7 @@ use App\Models\AlertRequest;
 use Validator;
 use Illuminate\Http\JsonResponse;
 use App\Http\Resources\alertRequestResource;
+use Illuminate\Support\Facades\Storage;
 
 class RequestController extends BaseController
 {
@@ -32,13 +33,27 @@ class RequestController extends BaseController
             'request_date'  => 'required|date',
             'longitude'     => 'required|numeric',
             'latitude'      => 'required|numeric',
+            'request_photo' => 'required||image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $alertRequest = AlertRequest::create($request->all());
+
+
+
+        $path = $request->file('request_photo')->store('request_photo', 'public');
+
+        $alertRequest = AlertRequest::create([
+            'user_id'       => $request->user_id,
+            'request_type'  => $request->request_type,
+            'request_status'=> $request->request_status,
+            'request_date'  => $request->request_date,
+            'longitude'     => $request->longitude,
+            'latitude'      => $request->latitude,
+            'request_photo' => $path,
+        ]);
 
         return $this->sendResponse(new alertRequestResource($alertRequest), 'Request is sent successfully.');
     }
