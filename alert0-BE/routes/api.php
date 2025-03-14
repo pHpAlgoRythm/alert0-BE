@@ -11,6 +11,8 @@ use App\Http\Controllers\API\ProfileController;
 Route::controller(RegisterController::class)->group(function(){
     Route::post('register', 'register');
     Route::post('login', 'login');
+    Route::get('retrieveDriver', 'retrieveDriver');
+    Route::get('retrieveResponder', 'retrieveResponder');
 });
 
 //emergency response requesting

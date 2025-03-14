@@ -69,6 +69,20 @@ class RegisterController extends BaseController
             return $this->sendError('Unauthorized.', ['error'=>'Unauthorized']);
         }
      }
+
+     public function retrieveDriver(Request $request): JsonResponse
+     {
+        $driver = User::where('role', 'driver')->get();
+
+        return $this->sendResponse($driver, 'Drivers');
+     }
+
+     public function retrieveResponder(Request $request): JsonResponse
+     {
+        $responder = User::Where('role', 'responder')->get();
+
+        return $this->sendResponse($responder, 'responder');
+     }
 }
 
 
