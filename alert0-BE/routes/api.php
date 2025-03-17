@@ -6,6 +6,7 @@ use App\Http\Controllers\API\RequestController;
 use App\Http\Controllers\API\RegisterController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\ProfileController;
+use App\Http\Controllers\API\SystemPhotoController;
 
 // authenctication
 Route::controller(RegisterController::class)->group(function(){
@@ -24,5 +25,10 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('/profile/displayProfile',[ProfileController::class, 'retrieveProfilePicture']);
 });
 
-
+//system photo
+Route::controller(SystemPhotoController::class)->group(function(){
+        Route::post('storeSystemPhoto', 'storeSystemPhoto');
+        Route::put('updateSystemPhoto',  'updateSystemPhoto');
+        Route::get('displaySystemPhoto', 'displaySystemPhoto');
+});
 
