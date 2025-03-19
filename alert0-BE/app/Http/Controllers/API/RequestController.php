@@ -21,6 +21,8 @@ class RequestController extends BaseController
         return $this->sendResponse($requests, 'Requests retrieved successfully.');
     }
 
+
+
     /**
      * Store a newly created resource in storage.
      */

@@ -8,19 +8,13 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use Illuminate\Http\JsonResponse;
+use App\Models\PendingAccounts;
 
 class RegisterController extends BaseController
 {
-     /**
-     * Register api
-     *
-     * @return \Illuminate\Http\Response
-     */
 
-    public function Register(Request $request)
+    public function PendingAccounts(Request $request)
     {
-
-
         $validator = Validator::make($request->all(),[
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
@@ -31,21 +25,79 @@ class RegisterController extends BaseController
             'role' => 'required',
             'status' => 'required',
             'phone' => 'required',
-
+            'verification_id' => 'required'
         ]);
 
         if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());
+            return $this->sendError('Validation Error', $validator->errors());
         }
 
         $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
-        $user = User::create($input);
-        $success['token'] = $user->createToken('myApp')->plainTextToken;
-        $success['name'] = $user->name;
+        $input['password'] = Hash::make($input['password']);
 
-        return $this->sendResponse($success, 'User Registered Successfully.');
+        $pendingUser = PendingAccounts::create($input);
 
+
+        return $this->sendResponse(['name' => $pendingUser->name], 'Waiting for Approval');
+
+    }
+
+     /**
+     * Register api
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public function Register($id)
+    {
+
+        $pendingUser = PendingAccounts::findorFail($id);
+
+        $user = User::create([
+            'name' => $pendingUser->name,
+            'email' => $pendingUser->email,
+            'password' => $pendingUser->password,
+            'address' => $pendingUser->address,
+            'role' => $pendingUser->role,
+            'status' => 'approved',
+            'phone' => $pendingUser->phone
+        ]);
+
+        $pendingUser->delete();
+
+        $token = $user->createToken('myApp')->plainTextToken;
+
+      return $this->sendResponse(['token' => $token, 'name' => $user->name], 'User Registered Successfully.');
+    }
+
+    public function updatePersonalInfo(Request $request, string $id)
+    {
+
+        $user = User::find($id);
+
+        if (!$user) {
+            return $this->sendError('user not found.', [], 404);
+        }
+
+        $validator = Validator::make($request->all(),[
+            'name' => 'sometimes|string',
+            'email' => 'sometimes|email|unique:users,email',
+            'password' => 'sometimes',
+            'c_password' => 'sometimes|same:password',
+            'address' => 'sometimes',
+            'gender' => 'sometimes',
+            'role' => 'sometimes',
+            'status' => 'sometimes',
+            'phone' => 'sometimes',
+        ]);
+
+        if($validator->fails()){
+            return $this->sendError('Validation Error', $validator->errors(), 422);
+        }
+
+        $user->update($request->all());
+
+        return $this->sendResponse($user, 'User updated Successfully.');
     }
 
     /**
@@ -69,6 +121,8 @@ class RegisterController extends BaseController
             return $this->sendError('Unauthorized.', ['error'=>'Unauthorized']);
         }
      }
+
+
 
      public function retrieveDriver(Request $request): JsonResponse
      {
