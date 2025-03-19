@@ -21,4 +21,10 @@ class AppServiceProvider extends ServiceProvider
     {
         //
     }
+
+    protected $listen = [
+        pendingUser::class => [
+            SendWebSocketUpdate::class,
+        ],
+    ];
 }

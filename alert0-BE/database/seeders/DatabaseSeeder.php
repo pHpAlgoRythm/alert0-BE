@@ -15,6 +15,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
+        $this->call([
+            systemPhotoSeeder::class,
+        ]);
+
         $users = [
             [
                 'name' => 'Admin User',

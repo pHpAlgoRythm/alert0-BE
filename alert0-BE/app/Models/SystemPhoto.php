@@ -21,4 +21,6 @@ class SystemPhoto extends Model
         'photo_name',
         'photo'
      ];
+
+     public $timestamps = true;
 }

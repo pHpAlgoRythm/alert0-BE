@@ -11,7 +11,7 @@ use App\Http\Controllers\API\SystemPhotoController;
 // authenctication
 Route::controller(RegisterController::class)->group(function(){
     Route::post('PendingAccounts', 'PendingAccounts');
-    Route::post('register/{id}', 'register');
+    Route::post('register', 'register');
     Route::post('login', 'login');
     Route::put('updatePersonalInfo/{id}', 'updatePersonalInfo');
     Route::get('retrieveDriver', 'retrieveDriver');

@@ -35,7 +35,7 @@ class RequestController extends BaseController
             'request_date'  => 'required|date',
             'longitude'     => 'required|numeric',
             'latitude'      => 'required|numeric',
-            'request_photo' => 'required||image|mimes:jpeg,png,jpg,gif|max:2048'
+            'request_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
         if ($validator->fails()) {

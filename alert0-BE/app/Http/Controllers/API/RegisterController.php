@@ -8,96 +8,79 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use Illuminate\Http\JsonResponse;
-use App\Models\PendingAccounts;
+use App\Events\getPendingUsers;
+use Illuminate\Support\Facades\DB;
 
 class RegisterController extends BaseController
 {
-
-    public function PendingAccounts(Request $request)
-    {
-        $validator = Validator::make($request->all(),[
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required',
-            'c_password' => 'required|same:password',
-            'address' => 'required',
-            'gender' => 'required',
-            'role' => 'required',
-            'status' => 'required',
-            'phone' => 'required',
-            'verification_id' => 'required'
-        ]);
-
-        if($validator->fails()){
-            return $this->sendError('Validation Error', $validator->errors());
-        }
-
-        $input = $request->all();
-        $input['password'] = Hash::make($input['password']);
-
-        $pendingUser = PendingAccounts::create($input);
-
-
-        return $this->sendResponse(['name' => $pendingUser->name], 'Waiting for Approval');
-
-    }
-
      /**
      * Register api
      *
      * @return \Illuminate\Http\Response
      */
 
-    public function Register($id)
+    public function Register(Request $request)
     {
 
-        $pendingUser = PendingAccounts::findorFail($id);
-
-        $user = User::create([
-            'name' => $pendingUser->name,
-            'email' => $pendingUser->email,
-            'password' => $pendingUser->password,
-            'address' => $pendingUser->address,
-            'role' => $pendingUser->role,
-            'status' => 'approved',
-            'phone' => $pendingUser->phone
-        ]);
-
-        $pendingUser->delete();
-
-        $token = $user->createToken('myApp')->plainTextToken;
-
-      return $this->sendResponse(['token' => $token, 'name' => $user->name], 'User Registered Successfully.');
-    }
-
-    public function updatePersonalInfo(Request $request, string $id)
-    {
-
-        $user = User::find($id);
-
-        if (!$user) {
-            return $this->sendError('user not found.', [], 404);
-        }
 
         $validator = Validator::make($request->all(),[
-            'name' => 'sometimes|string',
-            'email' => 'sometimes|email|unique:users,email',
-            'password' => 'sometimes',
-            'c_password' => 'sometimes|same:password',
-            'address' => 'sometimes',
-            'gender' => 'sometimes',
-            'role' => 'sometimes',
-            'status' => 'sometimes',
-            'phone' => 'sometimes',
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required',
+            'c_password' => 'required|same:password',
+            'approval_status' => 'required',
+            'approval_id_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'approval_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'address' => 'required',
+            'gender' => 'required',
+            'role' => 'required',
+            'status' => 'required',
+            'phone' => 'required',
+
         ]);
 
         if($validator->fails()){
-            return $this->sendError('Validation Error', $validator->errors(), 422);
+            return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $user->update($request->all());
 
-        return $this->sendResponse($user, 'User updated Successfully.');
+        try{
+            DB::beginTransaction();
+
+            $approvalIdPath = $request->file('approval_id_photo')->store('pending_approval', 'public');
+            $approvalPhotoPath = $request->file('approval_photo')->store('pending_approval', 'public');
+
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'approval_status' => $request->approval_status,
+                'approval_id_photo' => $path,
+                'approval_photo' => $path,
+                'address' => $request->address,
+                'gender' =>  $request->gender,
+                'role' =>  $request->role,
+                'status' =>  $request->status,
+                'phone' =>  $request->phone,
+            ]);
+
+            $success['token'] = $user->createToken('myApp')->plainTextToken;
+
+            event(new pendingUser($user));
+
+            DB::commit();
+            return $this->sendResponse($success, 'User Registered Successfully wait for approval.');
+
+        }catch(\Exception $e){
+            DB::rollback();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'something went wrong. Please try again.',
+                'error' => $e->getMessage(),
+             ], 500);
+        }
+
     }
 
     /**
@@ -122,7 +105,7 @@ class RegisterController extends BaseController
         }
      }
 
-
+     //get users
 
      public function retrieveDriver(Request $request): JsonResponse
      {
@@ -137,6 +120,13 @@ class RegisterController extends BaseController
 
         return $this->sendResponse($responder, 'responder');
      }
+
+
+    //  public function getPendingUsers(Request $request): JsonResponse
+    //  {
+    //     $pendingUsers = User::Where('approval_status', 'pending')->get();
+
+    //     return $this->sendResponse($pendingUsers, 'pending users');
+    //  }
+
 }
-
-
