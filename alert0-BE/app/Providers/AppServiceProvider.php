@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Events\pendingUser;
+use App\Listeners\sendWebUpdate;
 
 class AppServiceProvider extends ServiceProvider
 {

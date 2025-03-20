@@ -8,8 +8,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use Illuminate\Http\JsonResponse;
-use App\Events\getPendingUsers;
+use App\Events\pendingUser;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class RegisterController extends BaseController
 {
@@ -55,8 +56,8 @@ class RegisterController extends BaseController
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
                 'approval_status' => $request->approval_status,
-                'approval_id_photo' => $path,
-                'approval_photo' => $path,
+                'approval_id_photo' => $approvalIdPath,
+                'approval_photo' => $approvalPhotoPath,
                 'address' => $request->address,
                 'gender' =>  $request->gender,
                 'role' =>  $request->role,
@@ -66,7 +67,9 @@ class RegisterController extends BaseController
 
             $success['token'] = $user->createToken('myApp')->plainTextToken;
 
-            event(new pendingUser($user));
+            Http::post('http://localhost:3000/broadcast', [
+                'user' => $user
+            ]);
 
             DB::commit();
             return $this->sendResponse($success, 'User Registered Successfully wait for approval.');
@@ -78,6 +81,7 @@ class RegisterController extends BaseController
                 'success' => false,
                 'message' => 'something went wrong. Please try again.',
                 'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
              ], 500);
         }
 
@@ -125,6 +129,8 @@ class RegisterController extends BaseController
     //  public function getPendingUsers(Request $request): JsonResponse
     //  {
     //     $pendingUsers = User::Where('approval_status', 'pending')->get();
+
+    //     event(new pendingUser($pendingUsers));
 
     //     return $this->sendResponse($pendingUsers, 'pending users');
     //  }

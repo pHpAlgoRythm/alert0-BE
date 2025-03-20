@@ -23,7 +23,7 @@ class SendWebSocketUpdate
      */
     public function handle(pendingUser $event): void
     {
-        Http::post('http://localhost:3001/broadcast', [
+        Http::post('http://localhost:3000/broadcast', [
             'user' => $event->user
         ]);
     }

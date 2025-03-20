@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class pendingUser
+class PendingUser implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -19,7 +19,7 @@ class pendingUser
     /**
      * Create a new event instance.
      */
-    public function __construct()
+    public function __construct($user)
     {
         $this->user = $user;
     }
@@ -32,12 +32,12 @@ class pendingUser
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('admin-dashboard'),
+            new Channel('admin-dashboard'),
         ];
     }
 
-    public function broadCastAs()
+    public function broadcastAs()
     {
-        return 'pendingUsers';
+        return 'PendingUser';
     }
 }
