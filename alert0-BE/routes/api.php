@@ -16,6 +16,7 @@ Route::controller(RegisterController::class)->group(function(){
     Route::put('updatePersonalInfo/{id}', 'updatePersonalInfo');
     Route::get('retrieveDriver', 'retrieveDriver');
     Route::get('retrieveResponder', 'retrieveResponder');
+    Route::get('getPendingUsers', 'getPendingUsers');
 });
 
 //emergency response requesting

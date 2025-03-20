@@ -126,13 +126,11 @@ class RegisterController extends BaseController
      }
 
 
-    //  public function getPendingUsers(Request $request): JsonResponse
-    //  {
-    //     $pendingUsers = User::Where('approval_status', 'pending')->get();
+     public function getPendingUsers(Request $request): JsonResponse
+     {
+        $pendingUsers = User::Where('approval_status', 'pending')->get();
 
-    //     event(new pendingUser($pendingUsers));
-
-    //     return $this->sendResponse($pendingUsers, 'pending users');
-    //  }
+        return $this->sendResponse($pendingUsers, 'pending users');
+     }
 
 }
