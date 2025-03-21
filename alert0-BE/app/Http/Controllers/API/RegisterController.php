@@ -56,8 +56,8 @@ class RegisterController extends BaseController
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
                 'approval_status' => $request->approval_status,
-                'approval_id_photo' => $approvalIdPath,
-                'approval_photo' => $approvalPhotoPath,
+                'approval_id_photo' => asset('storage/' . $approvalIdPath),
+                'approval_photo' => asset('storage/' . $approvalPhotoPath),
                 'address' => $request->address,
                 'gender' =>  $request->gender,
                 'role' =>  $request->role,
@@ -65,13 +65,12 @@ class RegisterController extends BaseController
                 'phone' =>  $request->phone,
             ]);
 
-            $success['token'] = $user->createToken('myApp')->plainTextToken;
 
-            Http::post('http://localhost:3000/broadcast', [
-                'user' => $user
-            ]);
+            $success['data']  = $user;
 
             DB::commit();
+
+
             return $this->sendResponse($success, 'User Registered Successfully wait for approval.');
 
         }catch(\Exception $e){

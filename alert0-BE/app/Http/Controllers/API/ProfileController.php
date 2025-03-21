@@ -46,5 +46,4 @@ class ProfileController extends BaseController
                 : asset('default-avatar.jpg')
         ]);
     }
-
 }
