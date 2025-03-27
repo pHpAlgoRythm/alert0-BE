@@ -166,7 +166,7 @@ class RegisterController extends BaseController
      {
         $user = User::find($name);
 
-        return $this->sendResponse($user, 'user find');
+        return $this->sendResponse($user, 'user is found');
      }
 
 }
