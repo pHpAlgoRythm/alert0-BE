@@ -169,6 +169,15 @@ class RegisterController extends BaseController
         return $this->sendResponse($user, 'user is found');
      }
 
+     public function getResidents(Request $request): JsonResponse
+     {
+        $pendingUsers = User::Where('approval_status', 'active')
+                              ->where('role', 'resident')                
+                              ->get();
+
+        return $this->sendResponse($pendingUsers, 'pending users');
+     }
+
 }
 
 
