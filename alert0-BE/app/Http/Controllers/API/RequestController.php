@@ -1,4 +1,5 @@
 <?php
+// CONTROLLER SA PAG SEND SANG EMERGENCY RESPONSE REQUEST
 
 namespace App\Http\Controllers\API;
 
@@ -15,6 +16,8 @@ class RequestController extends BaseController
     /**
      * Display a listing of the resource.
      */
+
+    //  RETRIEVAL SANG TANAN NGA REQUEST
     public function index(): JsonResponse
     {
         $requests = AlertRequest::all();
@@ -26,6 +29,8 @@ class RequestController extends BaseController
     /**
      * Store a newly created resource in storage.
      */
+
+    //  GA BATON SANG EMERGENCY REQUEST 
     public function store(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
@@ -63,6 +68,8 @@ class RequestController extends BaseController
     /**
      * Display the specified resource.
      */
+
+     // RETRIEVE LANG ANG SPECIFIC NA REQUEST 
     public function show(string $id): JsonResponse
     {
         $alertRequest = AlertRequest::find($id);
@@ -77,6 +84,8 @@ class RequestController extends BaseController
     /**
      * Update the specified resource in storage.
      */
+
+    //  MAG UPDATE NAMAN NI YA SANG DATA SANG REQUEST LIKE(NAG SALA SIYA TUM OK IMBIS NGA AMBULANCE NA TUM OK NIYA FIRE TRUCK SO PWEDE NIYA MA ISLAN)
     public function update(Request $request, string $id): JsonResponse
     {
         $alertRequest = AlertRequest::find($id);
@@ -106,6 +115,8 @@ class RequestController extends BaseController
     /**
      * Remove the specified resource from storage.
      */
+
+    //  KUNG GUSTO SANG NAG REQUEST IDELETE ANG IYA NGA GIN REQUEST
     public function destroy(string $id): JsonResponse
     {
         $alertRequest = AlertRequest::find($id);

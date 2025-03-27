@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('approval_status')->after('email')->default('active');
-            $table->string('approval_id_photo')->after('approval_status');
-            $table->string('approval_photo')->after('approval_id_photo');
+            $table->string('approval_id_photo')->nullable()->after('approval_status');
+            $table->string('approval_photo')->nullable()->after('approval_id_photo');
         });
     }
 

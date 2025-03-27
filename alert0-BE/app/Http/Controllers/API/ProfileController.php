@@ -1,4 +1,5 @@
 <?php
+// controller mag upload, update, kag delete sang profile picture
 
 namespace App\Http\Controllers\api;
 
@@ -12,6 +13,8 @@ use App\Http\Controllers\API\BaseController;
 
 class ProfileController extends BaseController
 {
+
+    // update sang profile picture kay after sang registration ang static value niya is null
     public function updateProfilePicture(Request $request)
     {
         $request->validate([
@@ -36,6 +39,7 @@ class ProfileController extends BaseController
 
     }
 
+    // retrieval sang profile picture 
     public function retrieveProfilePicture()
     {
         $user = auth()->user();

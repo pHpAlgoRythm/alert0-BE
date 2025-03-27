@@ -17,6 +17,8 @@ Route::controller(RegisterController::class)->group(function(){
     Route::get('retrieveDriver', 'retrieveDriver');
     Route::get('retrieveResponder', 'retrieveResponder');
     Route::get('getPendingUsers', 'getPendingUsers');
+    Route::post('approvePendingUser/{id}', 'approvePendingUser');
+    Route::delete('declinePendingUser/{id}', 'declinePendingUser');
 });
 
 //emergency response requesting

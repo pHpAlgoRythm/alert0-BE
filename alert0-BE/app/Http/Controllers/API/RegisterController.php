@@ -1,5 +1,8 @@
 <?php
 
+// Authentication Controller ni siya
+
+
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
@@ -20,6 +23,7 @@ class RegisterController extends BaseController
      * @return \Illuminate\Http\Response
      */
 
+    //  REGISTRATION
     public function Register(Request $request)
     {
 
@@ -92,6 +96,7 @@ class RegisterController extends BaseController
      * @return \Illuminate\Http\Response
      */
 
+    //  LOGIN
      public function login(Request $request): JsonResponse
      {
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password ])){
@@ -110,6 +115,7 @@ class RegisterController extends BaseController
 
      //get users
 
+     //RETRIEVE ANG MGA DRIVER
      public function retrieveDriver(Request $request): JsonResponse
      {
         $driver = User::where('role', 'driver')->get();
@@ -117,6 +123,7 @@ class RegisterController extends BaseController
         return $this->sendResponse($driver, 'Drivers');
      }
 
+    //  MAG RETREIVE SANG RESPONDERS
      public function retrieveResponder(Request $request): JsonResponse
      {
         $responder = User::Where('role', 'responder')->get();
@@ -125,6 +132,7 @@ class RegisterController extends BaseController
      }
 
 
+     // RETRIEVE ANG MGA PENDING ACCOUNTS
      public function getPendingUsers(Request $request): JsonResponse
      {
         $pendingUsers = User::Where('approval_status', 'pending')->get();
@@ -132,4 +140,35 @@ class RegisterController extends BaseController
         return $this->sendResponse($pendingUsers, 'pending users');
      }
 
+     //MAG APPROVE SI ADMIN SANG USER REGISTRATION
+     public function approvePendingUser(Request $request, string $id): JsonResponse
+     {
+        $pendingUser = User::find($id);
+
+
+        $pendingUser->update(['approval_status' => 'active']);
+
+        return $this->sendResponse($pendingUser, 'user registration approved');
+
+     }
+
+     //IF iDECLINE NI ADMIN ANG ILA REGISTRATION
+     public function declinePendingUser(Request $request, string $id): JsonResponse
+     {
+        $pendingUser = User::find($id);
+        $pendingUser->delete();
+
+        return $this->sendResponse([], 'user registration is declined');
+     }
+    
+     
+     public function findUser(Request $request, string $name)
+     {
+        $user = User::find($name);
+
+        return $this->sendResponse($user, 'user find');
+     }
+
 }
+
+

@@ -1,5 +1,7 @@
 <?php
 
+// Base Controller ni siya where in ga handle sang pag send sang response sa api as Json
+
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
@@ -13,6 +15,7 @@ class BaseController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+     //ma send ni if success ang transaction
      public function sendResponse($result, $message)
      {
         $response = [
@@ -29,6 +32,7 @@ class BaseController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+    //  ma send ni if mai error sa transaction
      public function sendError($error, $errorMessages = [], $code = null)
      {
 
