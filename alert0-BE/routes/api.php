@@ -14,7 +14,7 @@ Route::controller(RegisterController::class)->group(function(){
     Route::post('register', 'Register');
     Route::post('login', 'login');
     Route::post('approvePendingUser/{id}', 'approvePendingUser');
-    Route::post('getResidents','getResidents');
+    Route::get('getResidents','getResidents');
     Route::put('updatePersonalInfo/{id}', 'updatePersonalInfo');
     Route::get('retrieveDriver', 'retrieveDriver');
     Route::get('retrieveResponder', 'retrieveResponder');

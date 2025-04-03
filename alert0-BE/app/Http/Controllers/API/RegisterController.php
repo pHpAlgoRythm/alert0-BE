@@ -14,6 +14,8 @@ use Illuminate\Http\JsonResponse;
 use App\Events\pendingUser;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
+
 
 class RegisterController extends BaseController
 {
@@ -105,6 +107,7 @@ class RegisterController extends BaseController
                 $success['id'] = $user->id;
                 $success['message'] = $user->name;
                 $success['role'] = $user->role;
+                $success['approval'] = $user->approval_status;
 
 
                 return $this->sendResponse( $success, 'User Login Successfully');
