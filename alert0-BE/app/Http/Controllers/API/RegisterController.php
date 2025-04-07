@@ -54,8 +54,8 @@ class RegisterController extends BaseController
         try{
             DB::beginTransaction();
 
-            $approvalIdPath = $request->file('approval_id_photo')->store('pending_approval', 'public');
-            $approvalPhotoPath = $request->file('approval_photo')->store('pending_approval', 'public');
+            $approvalIdPath = $request->file('approval_id_photo')->store('pending_approval/approval_id_photo', 'public');
+            $approvalPhotoPath = $request->file('approval_photo')->store('pending_approval/approval_photo', 'public');
 
             $user = User::create([
                 'name' => $request->name,
