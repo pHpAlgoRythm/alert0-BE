@@ -36,7 +36,7 @@ class RequestController extends BaseController
         $validator = Validator::make($request->all(), [
             'user_id'       => 'required|exists:users,id',
             'request_type'  => 'required|string',
-            'request_status'=> 'required|in:pending,in_progress,completed,rejected',
+            'request_status'=> 'sometimes|in:pending,in_progress,completed,rejected',
             'request_date'  => 'required|date',
             'longitude'     => 'required|numeric',
             'latitude'      => 'required|numeric',

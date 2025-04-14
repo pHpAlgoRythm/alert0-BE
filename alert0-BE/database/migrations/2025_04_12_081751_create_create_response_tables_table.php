@@ -13,8 +13,14 @@ return new class extends Migration
     {
         Schema::create('response', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('reporter_id');
-            $table->foreign('reporter_id')->references('id')->on('users');
+            $table->unsignedBigInteger('request_id');
+            $table->foreign('request_id')->references('id')->on('alert_requests');
+            $table->unsignedBigInteger('responders_id');
+            $table->foreign('responders_id')->references('id')->on('users');
+            $table->unsignedBigInteger('drivers_id');
+            $table->foreign('drivers_id')->references('id')->on('users');
+            $table->string('current_latitude')->nullable();
+            $table->string('current_longitude')->nullable();
             $table->timestamps();
         });
     }

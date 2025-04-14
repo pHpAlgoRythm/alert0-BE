@@ -15,11 +15,14 @@ Route::controller(RegisterController::class)->group(function(){
     Route::post('login', 'login');
     Route::post('approvePendingUser/{id}', 'approvePendingUser');
     Route::get('getResidents','getResidents');
-    Route::put('updatePersonalInfo/{id}', 'updatePersonalInfo');
     Route::get('retrieveDriver', 'retrieveDriver');
     Route::get('retrieveResponder', 'retrieveResponder');
     Route::get('getPendingUsers', 'getPendingUsers');
+    Route::get('getSpecificUser/{id}', 'getSpecificUser');
     Route::delete('declinePendingUser/{id}', 'declinePendingUser');
+    Route::put('updatePersonalInfo/{id}', 'updatePersonalInfo');
+
+    
 
 });
 
