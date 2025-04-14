@@ -59,7 +59,7 @@ class RequestController extends BaseController
             'request_date'  => $request->request_date,
             'longitude'     => $request->longitude,
             'latitude'      => $request->latitude,
-            'request_photo' => $path,
+            'request_photo' => asset('storage/'. $path) ,
         ]);
 
         return $this->sendResponse(new alertRequestResource($alertRequest), 'Request is sent successfully.');
