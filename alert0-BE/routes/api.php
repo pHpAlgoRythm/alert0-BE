@@ -7,6 +7,7 @@ use App\Http\Controllers\API\RegisterController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\ProfileController;
 use App\Http\Controllers\API\SystemPhotoController;
+use App\Http\Controllers\ResponseController;
 
 // authenctication
 Route::controller(RegisterController::class)->group(function(){
@@ -42,3 +43,8 @@ Route::controller(SystemPhotoController::class)->group(function(){
         Route::get('displaySystemPhoto', 'displaySystemPhoto');
 });
 
+// send response
+Route::controller(ResponseController::class)->group(function(){
+    Route::post('storeResponse', 'storeResponse');
+    Route::get('displayAssignment', 'displayAssignment');
+});

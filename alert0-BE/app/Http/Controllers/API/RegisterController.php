@@ -129,7 +129,9 @@ class RegisterController extends BaseController
     //  MAG RETREIVE SANG RESPONDERS
      public function retrieveResponder(Request $request): JsonResponse
      {
-        $responder = User::Where('role', 'responder')->get();
+        $responder = User::Where('role', 'responder')
+                           ->where('status', 'active')
+                           ->get();
 
         return $this->sendResponse($responder, 'responder');
      }
