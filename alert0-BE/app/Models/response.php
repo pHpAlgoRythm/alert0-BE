@@ -15,6 +15,7 @@ class response extends Model
        'request_id',
        'responders_id',
        'drivers_id',
+       'status',
        'current_latitude',
        'current_longitude'
     ];

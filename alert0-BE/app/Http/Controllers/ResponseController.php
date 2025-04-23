@@ -53,7 +53,7 @@ public function displayAssignment(Request $request): JsonResponse
 {
    
 
-    $response = response::with(['alertRequest', 'responder', 'driver'])->get();
+    $response = response::with(['alertRequest', 'responder', 'driver'])->where('request_status','new')->get();
                         
 
     if (!$response) {
