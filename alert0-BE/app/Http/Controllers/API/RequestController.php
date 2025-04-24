@@ -20,7 +20,7 @@ class RequestController extends BaseController
     //  RETRIEVAL SANG TANAN NGA REQUEST
     public function index(): JsonResponse
     {
-        $requests = AlertRequest::with('requester')->get();
+        $requests = AlertRequest::with('requester')->where('request_status', 'pending')->get();
         return $this->sendResponse($requests, 'Requests retrieved successfully.');
     }
 
@@ -81,9 +81,7 @@ class RequestController extends BaseController
         return $this->sendResponse( new alertRequestResource($alertRequest), 'Request retrieved successfully.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+  
 
     //  MAG UPDATE NAMAN NI YA SANG DATA SANG REQUEST LIKE(NAG SALA SIYA TUM OK IMBIS NGA AMBULANCE NA TUM OK NIYA FIRE TRUCK SO PWEDE NIYA MA ISLAN)
     public function update(Request $request, string $id): JsonResponse
@@ -112,9 +110,7 @@ class RequestController extends BaseController
         return $this->sendResponse(new alertRequestResource($alertRequest), 'Request updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+   
 
     //  KUNG GUSTO SANG NAG REQUEST IDELETE ANG IYA NGA GIN REQUEST
     public function destroy(string $id): JsonResponse
