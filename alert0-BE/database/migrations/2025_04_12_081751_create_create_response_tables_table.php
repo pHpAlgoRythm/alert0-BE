@@ -19,8 +19,8 @@ return new class extends Migration
             $table->foreign('responders_id')->references('id')->on('users');
             $table->unsignedBigInteger('drivers_id');
             $table->foreign('drivers_id')->references('id')->on('users');
-            $table->string('current_latitude')->nullable();
-            $table->string('current_longitude')->nullable();
+            $table->decimal('current_latitude', 10, 7)->nullable();
+            $table->decimal('current_longitude', 10, 7)->nullable();
             $table->timestamps();
         });
     }

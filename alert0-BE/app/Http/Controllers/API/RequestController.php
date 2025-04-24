@@ -20,7 +20,7 @@ class RequestController extends BaseController
     //  RETRIEVAL SANG TANAN NGA REQUEST
     public function index(): JsonResponse
     {
-        $requests = AlertRequest::all();
+        $requests = AlertRequest::with('requester')->get();
         return $this->sendResponse($requests, 'Requests retrieved successfully.');
     }
 

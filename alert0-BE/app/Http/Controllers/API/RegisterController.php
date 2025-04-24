@@ -188,7 +188,7 @@ class RegisterController extends BaseController
    public function getSpecificUser(Request $request, string $id): JsonResponse
    {
       $user = User::find($id);
-
+      
       return $this->sendResponse($user, 'user');
    }
 

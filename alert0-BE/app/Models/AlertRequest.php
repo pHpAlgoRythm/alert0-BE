@@ -19,4 +19,8 @@ class AlertRequest  extends Model
      protected $fillable = [
         'user_id', 'request_type', 'request_status', 'request_date', 'longitude', 'latitude', 'request_photo'
         ];
+
+    public function requester(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
