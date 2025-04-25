@@ -46,5 +46,9 @@ Route::controller(SystemPhotoController::class)->group(function(){
 // send response
 Route::controller(ResponseController::class)->group(function(){
     Route::post('storeResponse', 'storeResponse');
+    Route::put('updateStatus/{id}', 'updateStatus');
+    Route::put('updateResponderResponse/{id}', 'updateResponderResponse');
+    Route::put('updateDriverResponse/{id}', 'updateDriverResponse');
     Route::get('displayAssignment', 'displayAssignment');
+
 });

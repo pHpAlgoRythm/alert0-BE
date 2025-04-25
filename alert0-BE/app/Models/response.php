@@ -17,7 +17,10 @@ class response extends Model
        'drivers_id',
        'status',
        'current_latitude',
-       'current_longitude'
+       'current_longitude',
+       'request_status',
+       'drivers_response',
+       'responders_response'
     ];
 
     public function alertRequest()

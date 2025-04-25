@@ -61,7 +61,53 @@ public function displayAssignment(Request $request): JsonResponse
         }
 
     return $this->sendResponse($response, 'Assignment Details');
+
 }
+
+public function updateStatus(Request $request, string $id): JsonResponse
+{
+    $response = response::find($id);
+
+    if ($response->responders_response === 'responded' && $response->drivers_response === 'responded') {
+        $response->update(['request_status' => 'in_progress']);
+        $response->refresh();
+        return $this->sendResponse($response, 'Request status updated to in_progress');
+    }
+
+    return $this->sendResponse($response, 'Conditions not met to update status');
+}
+
+
+    public function updateResponderResponse(Request $request, string $id): JsonResponse
+    {
+        $response = response::find($id);
+
+        $response->update(['responders_response' => 'responded']);
+
+        $response->refresh();
+
+        if ($response->drivers_response === 'responded') {
+            $response->update(['request_status' => 'in_progress']);
+        }
+
+        return $this->sendResponse($response, 'updated successfully');
+
+    }
+
+    public function updateDriverResponse(Request $request, string $id): JsonResponse
+    {
+        $response = response::find($id);
+
+        $response->update(['drivers_response' => 'responded']);
+        $response->refresh();
+
+        if ($response->responders_response === 'responded') {
+            $response->update(['request_status' => 'in_progress']);
+        }
+
+        return $this->sendResponse($response, 'updated successfully');
+
+    }
 
 
 }
