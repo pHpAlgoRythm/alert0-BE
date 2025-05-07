@@ -109,5 +109,30 @@ public function updateStatus(Request $request, string $id): JsonResponse
 
     }
 
+    public function updateResponseLocation(Request $request, string $id): JsonResponse
+    {
+        $response = response::find($id);
+    
+        if (!$response) {
+            return $this->sendError('Response not found.');
+        }
+    
+        $validator = Validator::make($request->all(), [
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric'
+        ]);
+    
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+    
+        $response->current_latitude = $request->latitude;
+        $response->current_longitude = $request->longitude;
+        $response->save();
+    
+        return $this->sendResponse($response, 'Location updated successfully.');
+    }
+    
+
 
 }

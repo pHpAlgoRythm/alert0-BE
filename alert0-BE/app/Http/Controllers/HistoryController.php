@@ -4,62 +4,36 @@ namespace App\Http\Controllers;
 
 use App\Models\history;
 use Illuminate\Http\Request;
+use Validator;
+use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\API\BaseController as BaseController;
 
-class HistoryController extends Controller
+class HistoryController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+   public function showAllHistory(): JsonResponse
+   {
+    $histories = history::all();
+    return $this->sendResponse($histories, 'displaying all histories');
+   }
+
+   public function createHistory(Request $request): JsonResponse
+   {
+    $validator = Validator::make($request->all(), [
+        'request_id' => 'sometimes|exists:alert_requests,id',
+        'response_id' => 'sometimes|exists:response,id',
+        'vehicle_number' => 'sometimes'
+    ]);
+
+    if ($validator->fails()) {
+        return $this->sendError('Validation Error.', $validator->errors());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+    $history = history::create([
+        'request_id' => $request['request_id'],
+        'response_id' => $request['response_id'],
+        'vehicle_number' => $request['vehicle_number'],
+    ]);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(history $history)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(history $history)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, history $history)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(history $history)
-    {
-        //
-    }
+    return $this->sendResponse($history, 'created');
+   }
 }

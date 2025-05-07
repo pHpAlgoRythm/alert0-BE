@@ -8,6 +8,7 @@ use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\ProfileController;
 use App\Http\Controllers\API\SystemPhotoController;
 use App\Http\Controllers\ResponseController;
+use App\Http\Controllers\HistoryController;
 
 // authenctication
 Route::controller(RegisterController::class)->group(function(){
@@ -49,6 +50,11 @@ Route::controller(ResponseController::class)->group(function(){
     Route::put('updateStatus/{id}', 'updateStatus');
     Route::put('updateResponderResponse/{id}', 'updateResponderResponse');
     Route::put('updateDriverResponse/{id}', 'updateDriverResponse');
+    Route::put('updateLocation/{id}', 'updateResponseLocation');
     Route::get('displayAssignment', 'displayAssignment');
+});
 
+Route::controller(HistoryController::class)->group(function(){
+    Route::get('displayHistory', 'showAllHistory');
+    Route::post('createNewHistory', 'createHistory');
 });

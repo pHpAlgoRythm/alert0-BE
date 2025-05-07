@@ -4,62 +4,36 @@ namespace App\Http\Controllers;
 
 use App\Models\patient_care_reports;
 use Illuminate\Http\Request;
+use Validator;
+use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\API\BaseController as BaseController;
 
-class PatientCareReportsController extends Controller
+
+class PatientCareReportsController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+    
+   public function retrieveReport(): JsonResponse 
+   {
+    $patientCareReport = patient_care_report::all();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+    return $this->sendResponse($patientCareReport, 'patients care report');
+   }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+   public function storeReport(Request $request): JsonResponse
+   {
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(patient_care_reports $patient_care_reports)
-    {
-        //
-    }
+    $validator = Validator::make($request->all(), [
+        'request_id' => 'required|exists:alert_requests,id',
+        'history_id' => 'required|exists:history,id',
+        'triage' => 'required|in:red,yellow,green,black',
+        'trauma' => 'required|boolean',
+        'medical' => 'required|boolean',
+        'patient_information' => 'required',
+        'address' => 'required',
+        'care_onprogress_upon_arrival' => 'required|in:bystander,family,brgy personnel,pnp/cttramo,medical proffesional,ems,others',
+        'signs&syntoms' => 'required'
+    ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(patient_care_reports $patient_care_reports)
-    {
-        //
-    }
+   } 
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, patient_care_reports $patient_care_reports)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(patient_care_reports $patient_care_reports)
-    {
-        //
-    }
 }

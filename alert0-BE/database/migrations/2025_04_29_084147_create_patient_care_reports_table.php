@@ -30,7 +30,7 @@ return new class extends Migration
                     'civil_status' => '',
             ]));
             $table->string('address')->nullable();
-            $table->enum('case_onprogress_upon_arrival', ['bystander', 'family', 'brgy personnel', 'pnp/cttramo', 'medical proffesional', 'ems', 'others'])->nullable();
+            $table->enum('care_onprogress_upon_arrival', ['bystander', 'family', 'brgy personnel', 'pnp/cttramo', 'medical proffesional', 'ems', 'others'])->nullable();
             $table->json('signs&syntoms')->nullable();
             $table->json('allergies')->nullable();
             $table->json('medications')->nullable();
